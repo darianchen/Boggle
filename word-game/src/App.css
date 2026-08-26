@@ -37,6 +37,11 @@
   border-color: #388e3c;
 }
 
+.cell.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .clear-button {
   padding: 0.5rem 1.5rem;
   font-size: 1rem;

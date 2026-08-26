@@ -41,8 +41,15 @@ function App() {
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
 
+  const isAdjacent = (row: number, col: number) => {
+    if (selected.length === 0) return true // first click
+    const last = selected[selected.length - 1]
+    return Math.abs(last.row - row) <= 1 && Math.abs(last.col - col) <= 1
+  }
+
   const handleClick = (row: number, col: number) => {
     if (isSelected(row, col)) return
+    if (!isAdjacent(row, col)) return
     setSelected([...selected, { row, col }])
   }
 
