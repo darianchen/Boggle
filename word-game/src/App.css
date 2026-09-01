@@ -6,6 +6,18 @@
   padding: 2rem;
 }
 
+#game h1 {
+  margin-bottom: 0.25rem;
+}
+
+.byline {
+  margin-top: 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #888;
+  letter-spacing: 0.02em;
+}
+
 .word-display {
   font-size: 1.5rem;
   font-weight: bold;

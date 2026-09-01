@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 import { WORD_LIST } from './wordList'
-// fix hosting on vercel
 const GRID_SIZE = 4
 const LETTER_POOL = 'EEEEEEEEEEEEAAAAAAAAAIIIIIIIIIOOOOOOOONNNNNNRRRRRRTTTTTTLLLLSSSSUUUUDDDDGGGBBCCMMPPFFHHVVWWYYKJXQZ'
 
@@ -54,7 +53,8 @@ function App() {
 
   return (
     <div id="game">
-      <h1>Word Game</h1>
+      <h1>Boggle</h1>
+      <p className="byline">by Darian Chen</p>
 
       <div className="word-display">
         {currentWord || 'Click letters to form a word'}
