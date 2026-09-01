@@ -29,6 +29,7 @@ function App() {
   const [grid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
   const [selected, setSelected] = useState<Cell[]>([])
   const [foundWord, setFoundWord] = useState<string | null>(null)
+  const [foundWords, setFoundWords] = useState<string[]>([])
 
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
@@ -48,9 +49,10 @@ function App() {
     if (!isAdjacent(row, col)) return
     const points = [...selected, { row, col }]
     const possibleWord = points.map((cell) => grid[cell.row][cell.col]).join('')
-    if (isWord(possibleWord)) {
+    if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
       setSelected([])
       setFoundWord(possibleWord)
+      setFoundWords([...foundWords, possibleWord])
     } else {
       setSelected(points)
     }
@@ -62,7 +64,7 @@ function App() {
   }
 
   const currentWord = selected.map(({ row, col }) => grid[row][col]).join('')
-  const currentWordIsValid = currentWord.length > 0 && isWord(currentWord)
+  const currentWordIsValid = currentWord.length > 0 && isWord(currentWord) && !foundWords.includes(currentWord)
 
   return (
     <div id="game">
