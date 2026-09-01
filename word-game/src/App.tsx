@@ -28,6 +28,7 @@ type Cell = { row: number; col: number }
 function App() {
   const [grid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
   const [selected, setSelected] = useState<Cell[]>([])
+  const [foundWord, setFoundWord] = useState<string | null>(null)
 
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
@@ -39,6 +40,7 @@ function App() {
   }
 
   const handleClick = (row: number, col: number) => {
+    setFoundWord(null)
     if (isSelected(row, col)) {
       setSelected([]);
       return;
@@ -46,11 +48,17 @@ function App() {
     if (!isAdjacent(row, col)) return
     const points = [...selected, { row, col }]
     const possibleWord = points.map((cell) => grid[cell.row][cell.col]).join('')
-    setSelected(isWord(possibleWord) ? [] : points)
+    if (isWord(possibleWord)) {
+      setSelected([])
+      setFoundWord(possibleWord)
+    } else {
+      setSelected(points)
+    }
   }
 
   const handleClear = () => {
     setSelected([])
+    setFoundWord(null)
   }
 
   const currentWord = selected.map(({ row, col }) => grid[row][col]).join('')
@@ -62,8 +70,14 @@ function App() {
       <p className="byline">by Darian Chen</p>
 
       <div className="word-display">
-        {currentWord || 'Click letters to form a word'}
-        {currentWordIsValid && <span className="valid-badge"> ✓ valid word</span>}
+        {foundWord ? (
+          <span className="congrats">🎉 Congrats, you found "{foundWord}"!</span>
+        ) : (
+          <>
+            {currentWord || 'Click letters to form a word'}
+            {currentWordIsValid && <span className="valid-badge"> ✓ valid word</span>}
+          </>
+        )}
       </div>
 
       <div

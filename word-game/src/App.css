@@ -25,6 +25,10 @@
   letter-spacing: 0.1em;
 }
 
+.congrats {
+  color: #4caf50;
+}
+
 .grid {
   display: grid;
   gap: 8px;
