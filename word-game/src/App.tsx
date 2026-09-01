@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-
+import { WORD_LIST } from './wordList'
+// fix hosting on vercel
 const GRID_SIZE = 4
 const LETTER_POOL = 'EEEEEEEEEEEEAAAAAAAAAIIIIIIIIIOOOOOOOONNNNNNRRRRRRTTTTTTLLLLSSSSUUUUDDDDGGGBBCCMMPPFFHHVVWWYYKJXQZ'
 
@@ -19,15 +20,6 @@ function makeGrid(size: number): string[][] {
   }
   return grid
 }
-const WORD_LIST = new Set([
-  'CAT', 'DOG', 'RAT', 'BAT', 'HAT', 'CAR', 'CARE', 'RACE', 'DEAR',
-  'READ', 'DATE', 'GATE', 'LATE', 'TIRE', 'RIDE', 'SIDE', 'TIDE',
-  'NOTE', 'TONE', 'DONE', 'GONE', 'LONE', 'BONE', 'NINE', 'LINE',
-  'MINE', 'WINE', 'VINE', 'FIRE', 'HIRE', 'WIRE', 'RISE', 'WISE',
-  'NOSE', 'ROSE', 'HOSE', 'HOLE', 'MOLE', 'SOLE', 'SOLD', 'GOLD',
-  'BOLD', 'TOLD', 'HOLD',
-])
-
 function isWord(word: string): boolean {
   return WORD_LIST.has(word.toUpperCase())
 }
