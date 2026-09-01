@@ -30,6 +30,7 @@ function App() {
   const [selected, setSelected] = useState<Cell[]>([])
   const [foundWord, setFoundWord] = useState<string | null>(null)
   const [foundWords, setFoundWords] = useState<string[]>([])
+  const [points, setPoints] = useState<number>(0)
 
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
@@ -47,14 +48,15 @@ function App() {
       return;
     }
     if (!isAdjacent(row, col)) return
-    const points = [...selected, { row, col }]
-    const possibleWord = points.map((cell) => grid[cell.row][cell.col]).join('')
+    const coordinates = [...selected, { row, col }]
+    const possibleWord = coordinates.map((cell) => grid[cell.row][cell.col]).join('')
     if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
       setSelected([])
       setFoundWord(possibleWord)
       setFoundWords([...foundWords, possibleWord])
+      possibleWord.length === 3 ? setPoints(points + 1) : setPoints(points + 2)
     } else {
-      setSelected(points)
+      setSelected(coordinates)
     }
   }
 
@@ -70,6 +72,8 @@ function App() {
     <div id="game">
       <h1>Boggle</h1>
       <p className="byline">by Darian Chen</p>
+
+      <div className="score">Score: {points}</div>
 
       <div className="word-display">
         {foundWord ? (

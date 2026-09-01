@@ -18,6 +18,11 @@
   letter-spacing: 0.02em;
 }
 
+.score {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
 .word-display {
   font-size: 1.5rem;
   font-weight: bold;
