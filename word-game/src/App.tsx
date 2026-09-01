@@ -39,9 +39,14 @@ function App() {
   }
 
   const handleClick = (row: number, col: number) => {
-    if (isSelected(row, col)) return
+    if (isSelected(row, col)) {
+      setSelected([]);
+      return;
+    }
     if (!isAdjacent(row, col)) return
-    setSelected([...selected, { row, col }])
+    const points = [...selected, { row, col }]
+    const possibleWord = points.map((cell) => grid[cell.row][cell.col]).join('')
+    setSelected(isWord(possibleWord) ? [] : points)
   }
 
   const handleClear = () => {
