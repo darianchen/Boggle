@@ -26,7 +26,7 @@ function isWord(word: string): boolean {
 type Cell = { row: number; col: number }
 
 function App() {
-  const [grid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
+  const [grid, setGrid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
   const [selected, setSelected] = useState<Cell[]>([])
   const [foundWord, setFoundWord] = useState<string | null>(null)
   const [foundWords, setFoundWords] = useState<string[]>([])
@@ -63,6 +63,14 @@ function App() {
   const handleClear = () => {
     setSelected([])
     setFoundWord(null)
+  }
+
+  const deleteLetters = (coordinates: []) => {
+    // delete all the selected letters that make a word
+    // starting from the bottom make the letters drop
+    for(let i = 0; i < coordinates.length; i++) {
+      
+    }
   }
 
   const currentWord = selected.map(({ row, col }) => grid[row][col]).join('')
