@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { WORD_LIST } from './wordList'
 const GRID_SIZE = 4
@@ -19,6 +19,7 @@ function makeGrid(size: number): string[][] {
   }
   return grid
 }
+
 function isWord(word: string): boolean {
   return WORD_LIST.has(word.toUpperCase())
 }
@@ -26,11 +27,24 @@ function isWord(word: string): boolean {
 type Cell = { row: number; col: number }
 
 function App() {
-  const [grid, setGrid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
+  const [grid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
   const [selected, setSelected] = useState<Cell[]>([])
   const [foundWord, setFoundWord] = useState<string | null>(null)
   const [foundWords, setFoundWords] = useState<string[]>([])
   const [points, setPoints] = useState<number>(0)
+
+  useEffect(() => {
+    const possibleWord = selected.map((cell) => grid[cell.row][cell.col]).join('')
+
+    //check if this is an actual word
+    if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
+      setFoundWord(possibleWord)
+      setFoundWords([...foundWords, possibleWord])
+      setPoints((prev) => prev + possibleWord.length)
+      deleteLetters()
+      setSelected([])
+    }
+  },[selected])
 
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
@@ -48,16 +62,7 @@ function App() {
       return;
     }
     if (!isAdjacent(row, col)) return
-    const coordinates = [...selected, { row, col }]
-    const possibleWord = coordinates.map((cell) => grid[cell.row][cell.col]).join('')
-    if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
-      setSelected([])
-      setFoundWord(possibleWord)
-      setFoundWords([...foundWords, possibleWord])
-      possibleWord.length === 3 ? setPoints(points + 1) : setPoints(points + 2)
-    } else {
-      setSelected(coordinates)
-    }
+    setSelected((prev) => [...prev, {row, col}])
   }
 
   const handleClear = () => {
@@ -65,11 +70,12 @@ function App() {
     setFoundWord(null)
   }
 
-  const deleteLetters = (coordinates: []) => {
+  const deleteLetters = () => {
     // delete all the selected letters that make a word
     // starting from the bottom make the letters drop
-    for(let i = 0; i < coordinates.length; i++) {
-      
+    for(const {row, col} of selected) {
+      console.log(grid[row][col])
+      grid[row][col] = ''
     }
   }
 
