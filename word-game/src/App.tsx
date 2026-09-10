@@ -8,14 +8,16 @@ function pickRandomLetter(): string {
   return LETTER_POOL[Math.floor(Math.random() * LETTER_POOL.length)]
 }
 
+// grid[col][row] — each inner array is one column, top row first, so
+// dropping letters is just an operation on a single column array
 function makeGrid(size: number): string[][] {
   const grid: string[][] = []
-  for (let row = 0; row < size; row++) {
-    const rowLetters: string[] = []
-    for (let col = 0; col < size; col++) {
-      rowLetters.push(pickRandomLetter())
+  for (let col = 0; col < size; col++) {
+    const colLetters: string[] = []
+    for (let row = 0; row < size; row++) {
+      colLetters.push(pickRandomLetter())
     }
-    grid.push(rowLetters)
+    grid.push(colLetters)
   }
   return grid
 }
@@ -34,7 +36,7 @@ function App() {
   const [points, setPoints] = useState<number>(0)
 
   useEffect(() => {
-    const possibleWord = selected.map((cell) => grid[cell.row][cell.col]).join('')
+    const possibleWord = selected.map((cell) => grid[cell.col][cell.row]).join('')
 
     //check if this is an actual word
     if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
@@ -74,12 +76,12 @@ function App() {
     // delete all the selected letters that make a word
     // starting from the bottom make the letters drop
     for(const {row, col} of selected) {
-      console.log(grid[row][col])
-      grid[row][col] = ''
+      console.log(grid[col][row])
+      grid[col][row] = ''
     }
   }
 
-  const currentWord = selected.map(({ row, col }) => grid[row][col]).join('')
+  const currentWord = selected.map(({ row, col }) => grid[col][row]).join('')
   const currentWordIsValid = currentWord.length > 0 && isWord(currentWord) && !foundWords.includes(currentWord)
 
   return (
@@ -104,14 +106,14 @@ function App() {
         className="grid"
         style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` }}
       >
-        {grid.map((rowLetters, row) =>
-          rowLetters.map((letter, col) => (
+        {Array.from({ length: GRID_SIZE }, (_, row) =>
+          grid.map((colLetters, col) => (
             <button
               key={`${row}-${col}`}
               className={`cell${isSelected(row, col) ? ' selected' : ''}`}
               onClick={() => handleClick(row, col)}
             >
-              {letter}
+              {colLetters[row]}
             </button>
           )),
         )}
