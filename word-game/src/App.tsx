@@ -29,7 +29,7 @@ function isWord(word: string): boolean {
 type Cell = { row: number; col: number }
 
 function App() {
-  const [grid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
+  const [grid, setGrid] = useState<string[][]>(() => makeGrid(GRID_SIZE))
   const [selected, setSelected] = useState<Cell[]>([])
   const [foundWord, setFoundWord] = useState<string | null>(null)
   const [foundWords, setFoundWords] = useState<string[]>([])
@@ -73,12 +73,21 @@ function App() {
   }
 
   const deleteLetters = () => {
-    // delete all the selected letters that make a word
-    // starting from the bottom make the letters drop
-    for(const {row, col} of selected) {
-      console.log(grid[col][row])
-      grid[col][row] = ''
+    const deletedRowsByCol = new Map<number, Set<number>>()
+    for (const { row, col } of selected) {
+      if (!deletedRowsByCol.has(col)) deletedRowsByCol.set(col, new Set())
+      deletedRowsByCol.get(col)!.add(row)
     }
+
+    setGrid((prevGrid) =>
+      prevGrid.map((colLetters, col) => {
+        const deletedRows = deletedRowsByCol.get(col)
+        if (!deletedRows) return colLetters
+        const remaining = colLetters.filter((_, row) => !deletedRows.has(row))
+        const newLetters = Array.from({ length: colLetters.length - remaining.length }, pickRandomLetter)
+        return [...newLetters, ...remaining]
+      }),
+    )
   }
 
   const currentWord = selected.map(({ row, col }) => grid[col][row]).join('')
