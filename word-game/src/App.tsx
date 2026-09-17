@@ -72,6 +72,10 @@ function App() {
     setFoundWord(null)
   }
 
+  const handleSubmit = () => {
+    // add logic to submit word
+  }
+
   const deleteLetters = () => {
     const deletedRowsByCol = new Map<number, Set<number>>()
     for (const { row, col } of selected) {
@@ -127,6 +131,10 @@ function App() {
           )),
         )}
       </div>
+
+      <button className="submit-button" onClick={handleSubmit}>
+        Submit
+      </button>
 
       <button className="clear-button" onClick={handleClear}>
         Clear
