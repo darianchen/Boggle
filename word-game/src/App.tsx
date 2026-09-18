@@ -88,7 +88,6 @@ function App() {
   }
 
   const currentWord = selected.map(({ row, col }) => grid[col][row]).join('')
-  const currentWordIsValid = currentWord.length > 0 && isWord(currentWord) && !foundWords.includes(currentWord)
 
   return (
     <div id="game">
@@ -98,13 +97,8 @@ function App() {
       <div className="score">Score: {points}</div>
 
       <div className="word-display">
-        {foundWord ? (
+        {foundWord && (
           <span className="congrats">🎉 Congrats, you found "{foundWord}"!</span>
-        ) : (
-          <>
-            {currentWord || 'Click letters to form a word'}
-            {currentWordIsValid && <span className="valid-badge"> ✓ valid word</span>}
-          </>
         )}
       </div>
 
