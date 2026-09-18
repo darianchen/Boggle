@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import { WORD_LIST } from './wordList'
 const GRID_SIZE = 4
@@ -35,19 +35,6 @@ function App() {
   const [foundWords, setFoundWords] = useState<string[]>([])
   const [points, setPoints] = useState<number>(0)
 
-  useEffect(() => {
-    const possibleWord = selected.map((cell) => grid[cell.col][cell.row]).join('')
-
-    //check if this is an actual word
-    if (isWord(possibleWord) && !foundWords.includes(possibleWord)) {
-      setFoundWord(possibleWord)
-      setFoundWords([...foundWords, possibleWord])
-      setPoints((prev) => prev + possibleWord.length)
-      deleteLetters()
-      setSelected([])
-    }
-  },[selected])
-
   const isSelected = (row: number, col: number) =>
     selected.some((cell) => cell.row === row && cell.col === col)
 
@@ -73,7 +60,13 @@ function App() {
   }
 
   const handleSubmit = () => {
-    // add logic to submit word
+    if (isWord(currentWord) && !foundWords.includes(currentWord)) {
+      setFoundWord(currentWord)
+      setFoundWords([...foundWords, currentWord])
+      setPoints((prev) => prev + currentWord.length)
+      deleteLetters()
+      setSelected([])
+    }
   }
 
   const deleteLetters = () => {
