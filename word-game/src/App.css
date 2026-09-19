@@ -68,3 +68,8 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

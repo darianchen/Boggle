@@ -88,6 +88,7 @@ function App() {
   }
 
   const currentWord = selected.map(({ row, col }) => grid[col][row]).join('')
+  const isSubmittable = currentWord.length > 0 && isWord(currentWord) && !foundWords.includes(currentWord)
 
   return (
     <div id="game">
@@ -119,7 +120,7 @@ function App() {
         )}
       </div>
 
-      <button className="submit-button" onClick={handleSubmit}>
+      <button className="submit-button" onClick={handleSubmit} disabled={!isSubmittable}>
         Submit
       </button>
 
