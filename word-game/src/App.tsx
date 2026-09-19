@@ -103,6 +103,11 @@ function App() {
         )}
       </div>
 
+      <div className="found-words">
+        <div><strong>Found:</strong></div>
+        {foundWords.length === 0 ? 'None' : foundWords.join(', ')}
+      </div>
+
       <div
         className="grid"
         style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` }}
